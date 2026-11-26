@@ -1,0 +1,29 @@
+/* ── Page layout */
+
+.ts-page { flex: 1; min-width: 0; display: grid; gap: 15px; align-content: start; padding: 30px; }
+.ts-page .ts-header h1 { margin: 0; font-size: 2rem; font-weight: bold; color: #17202d; }
+.ts-page .ts-header p  { margin: 4px 0 0; font-size: 1rem; font-weight: 300; color: #5b6577; }
+.ts-page .ts-card { margin: 0; padding: 20px; border-radius: 10px; border: 1px solid #dde2ec; box-shadow: 2px 2px 8px rgba(8,8,8,.15); background: #fff; }
+.ts-page .ts-content { display: grid; gap: 15px; }
+
+/* ── Transaction list table */
+.ts-page .ts-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; }
+.ts-page .ts-list-title { font-size: 1rem; font-weight: bold; color: #17202d; }
+.ts-page .ts-search { padding: 7px 12px; border: 1.5px solid #d1d9e6; border-radius: 7px; font-size: 13px; width: 220px; color: #162033; }
+.ts-page .ts-search:focus { outline: none; border-color: #2830c0; }
+.ts-page .ts-table-wrap { max-height: 300px; overflow-y: auto; overflow-x: auto; }
+.ts-page .ts-table { width: 100%; border-collapse: collapse; }
+.ts-page .ts-table thead th { padding: 12px 10px; font-weight: bold; color: #5b6577; border: 1px solid #e8ebf2; background: #fafbfd; position: sticky; top: 0; z-index: 1; }
+.ts-page .ts-table tbody tr { cursor: pointer; }
+.ts-page .ts-table tbody td { padding: 14px 10px; border: 1px solid #e8ebf2; }
+.ts-page .ts-table tbody tr:hover { background: #f1f3fb; }
+.ts-page .ts-table tbody tr.ts-selected td:first-child { border-left: 4px solid #2830c0; }
+.ts-page .ts-table td.ts-empty { text-align: center; color: #5b6577; }
+
+/*  Status color badges */
+.ts-page .ts-status   { font-weight: bold; }
+.ts-page .ts-pending  { color: #6b4a00; background: #fbebc8; }
+.ts-page .ts-progress { color: #1b3f6b; background: #d6e6f5; }
+.ts-page .ts-ready    { color: #1e5c3a; background: #d0eddc; }
+.ts-page .ts-declined { color: #9b1c1c; background: #fde2e0; }
+.ts-page .ts-tag-new  { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 6px; font-size: .8rem; font-weight: bold; color: #2830c0; background: #e0e3fa; }
