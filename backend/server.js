@@ -8,6 +8,8 @@ import authRoutes       from './routes/authRoutes.js';
 import employeeRoutes   from './routes/employeeRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
 import payrollRoutes    from './routes/payrollRoutes.js';
+import attendanceScanRoutes  from '../employee-management/backend/routes/attendanceScanRoutes.js';
+import payrollRecordRoutes   from '../employee-management/backend/routes/payrollRecordRoutes.js';
 
 const app = express();
 
@@ -36,10 +38,12 @@ app.use(session({
 // ==========================================
 // ROUTES
 // ==========================================
-app.use('/api/auth',       authRoutes);
-app.use('/api/employee',   employeeRoutes);
-app.use('/api/attendance', attendanceRoutes);
-app.use('/api/payroll',    payrollRoutes);
+app.use('/api/auth',            authRoutes);
+app.use('/api/employee',        employeeRoutes);
+app.use('/api/attendance',      attendanceRoutes);
+app.use('/api/payroll',         payrollRoutes);
+app.use('/api/attendance-scan', attendanceScanRoutes);
+app.use('/api/payroll-records', payrollRecordRoutes);
 
 // ==========================================
 // DATABASE TEST

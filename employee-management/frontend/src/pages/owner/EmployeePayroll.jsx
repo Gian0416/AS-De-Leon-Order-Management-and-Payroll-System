@@ -1,6 +1,6 @@
 // WBS 2.3.1 - Wage Computation
 // WBS 2.3.2 - Payroll Validation and Saving
-// WBS 2.4.1 - Payroll Records View (added in PR #8)
+// WBS 2.4.1 - Payroll Records View
 import { useEffect, useState } from 'react'
 import OwnerLayout  from '../../components/OwnerLayout'
 import OwnerMessage from '../../components/OwnerMessage'
@@ -43,16 +43,30 @@ const EMPTY_FORM = {
 
 export default function EmployeePayroll() {
     const [form, setForm]           = useState(EMPTY_FORM)
+    const [records, setRecords]     = useState([])  // WBS 2.4.1 - saved payroll records
     const [employees, setEmployees] = useState([])
     const [msg, setMsg]             = useState(null)
+
+    async function loadRecords() {
+        try {
+            const res = await api('/api/payroll-records')
+            setRecords(res.data || [])
+        } catch (err) {
+            setMsg({ text: err.message, ok: false })
+        }
+    }
 
     useEffect(() => {
         let cancelled = false
 
         async function load() {
             try {
-                const emp = await api('/api/employee')
+                const [rec, emp] = await Promise.all([
+                    api('/api/payroll-records'),
+                    api('/api/employee')
+                ])
                 if (cancelled) return
+                setRecords(rec.data || [])
                 setEmployees(emp.data || [])
             } catch (err) {
                 if (!cancelled) setMsg({ text: err.message, ok: false })
@@ -127,6 +141,7 @@ export default function EmployeePayroll() {
             })
             setMsg({ text: 'Payroll record saved.', ok: true })
             setForm(EMPTY_FORM)
+            loadRecords()
         } catch (err) {
             fail(err.message)
         }
@@ -212,6 +227,34 @@ export default function EmployeePayroll() {
                     <button className="em-full">Save payroll record</button>
                 </div>
             </form>
+
+            {/* WBS 2.4.1 - payroll records table, newest week first */}
+            <div className="em-card">
+                <h2>Payroll records</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th><th>Position</th><th>Week</th><th>Hours</th>
+                            <th>Gross</th><th>Deductions</th><th>Net</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {records.length === 0 ? (
+                            <tr><td colSpan={7}>No payroll records yet.</td></tr>
+                        ) : records.map(r => (
+                            <tr key={r.id}>
+                                <td>{r.employee_name}</td>
+                                <td>{r.position}</td>
+                                <td>{r.week_start} to {r.week_end}</td>
+                                <td>{Number(r.hours).toFixed(1)}</td>
+                                <td>{peso(r.gross)}</td>
+                                <td>{peso(r.deductions)}</td>
+                                <td>{peso(r.net)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </OwnerLayout>
     )
 }
