@@ -1,4 +1,5 @@
-﻿// WBS 2.2.1 - Daily Attendance View
+﻿// WBS 2.2.2 - Attendance Summary and Status
+// WBS 2.2.1 - Daily Attendance View
 // WBS 2.2.1 - Daily Attendance View
 // WBS 2.2.2 - Attendance Summary and Status
 import { useEffect, useMemo, useState } from 'react'
