@@ -1,5 +1,5 @@
 // WBS 2.3.1 - Wage Computation
-// WBS 2.3.2 - Payroll Validation and Saving (added in PR #7)
+// WBS 2.3.2 - Payroll Validation and Saving
 // WBS 2.4.1 - Payroll Records View (added in PR #8)
 import { useEffect, useState } from 'react'
 import OwnerLayout  from '../../components/OwnerLayout'
@@ -82,6 +82,56 @@ export default function EmployeePayroll() {
         })
     }
 
+    // WBS 2.3.2 - validate fields and save the payroll record
+    async function handleSubmit(e) {
+        e.preventDefault()
+
+        const name  = form.employee_name.trim()
+        const position = form.position.trim()
+        const h     = Number(form.hours)
+        const r     = Number(form.rate)
+        const late  = Number(form.late)
+        const abs   = Number(form.absence)
+        const wrong = Number(form.wrong_project)
+        const start = form.week_start
+        const end   = form.week_end
+
+        const fail = text => setMsg({ text, ok: false })
+
+        if (!name)                              return fail('Enter the employee name.')
+        if (!position)                          return fail('Enter the position.')
+        if (!start || !end)                     return fail('Enter the week starting and week ending dates.')
+        if (end < start)                        return fail('The week ending date cannot be before the week starting date.')
+        if (!(h > 0))                           return fail('Work hours must be more than 0.')
+        if (!(r > 0))                           return fail('Rate per hour must be more than 0.')
+        if (late < 0 || abs < 0 || wrong < 0)  return fail('Deductions cannot be negative.')
+
+        const grossWage      = Math.round(h * r * 100) / 100
+        const totalDeductions = Math.round((late + abs + wrong) * 100) / 100
+        if (totalDeductions > grossWage)        return fail('Deductions are larger than the gross wage.')
+
+        try {
+            await api('/api/payroll-records', {
+                method: 'POST',
+                body: {
+                    employee_name: name,
+                    position,
+                    week_start:    start,
+                    week_end:      end,
+                    hours:         h,
+                    rate:          r,
+                    late,
+                    absence:       abs,
+                    wrong_project: wrong
+                }
+            })
+            setMsg({ text: 'Payroll record saved.', ok: true })
+            setForm(EMPTY_FORM)
+        } catch (err) {
+            fail(err.message)
+        }
+    }
+
     return (
         <OwnerLayout active="employee-payroll">
             <div className="em-top">
@@ -94,7 +144,8 @@ export default function EmployeePayroll() {
             <OwnerMessage msg={msg} />
 
             {/* WBS 2.3.1 - payroll entry form with wage computation card */}
-            <div className="em-row em-no-print">
+            {/* WBS 2.3.2 - save payroll record button and validation */}
+            <form className="em-row em-no-print" onSubmit={handleSubmit}>
 
                 {/* Payroll entry */}
                 <div className="em-card" style={{ flex: 2 }}>
@@ -157,8 +208,10 @@ export default function EmployeePayroll() {
                         <p><span>Total deductions</span><span>{peso(deductions)}</span></p>
                         <p className="em-net"><span>Net wage</span><span>{peso(gross - deductions)}</span></p>
                     </div>
+                    {/* WBS 2.3.2 - save button */}
+                    <button className="em-full">Save payroll record</button>
                 </div>
-            </div>
+            </form>
         </OwnerLayout>
     )
 }
