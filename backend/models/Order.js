@@ -51,3 +51,17 @@ export const insertDirect = async (order) => {
     );
     return result.insertId;
 };
+
+// Retrieve a single order by ID with customer email for the details panel
+export const findById = async (id) => {
+    const [rows] = await pool.query(
+        `SELECT o.*,
+            COALESCE(o.customer_name, u.full_name) AS customer_name,
+            u.email AS customer_email
+         FROM orders o
+         LEFT JOIN users u ON u.id = o.customer_id
+         WHERE o.id = ? LIMIT 1`,
+        [id]
+    );
+    return rows[0] ?? null;
+};

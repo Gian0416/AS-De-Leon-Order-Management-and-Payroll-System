@@ -30,3 +30,10 @@ export const createOrder   = async (req, res) => {
         return res.status(201).json({ success: true, message: 'Order created.', data: result });
     } catch (e) { return sendError(res, 'Create Order', e, 'Could not create order.'); }
 };
+
+//  Retrieve full order details including items, payments, and progress
+export const getOrderById  = async (req, res) => {
+    try { return res.status(200).json({ success: true, data: await orderService.fetchOrderById(Number(req.params.id)) }); }
+    catch (e) { return sendError(res, 'Get Order', e, 'Could not retrieve order.'); }
+};
+
