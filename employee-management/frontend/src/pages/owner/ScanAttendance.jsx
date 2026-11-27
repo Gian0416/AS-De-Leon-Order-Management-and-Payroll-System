@@ -59,6 +59,8 @@ export default function ScanAttendance() {
     const [msg, setMsg]           = useState(null)
     const [last, setLast]         = useState(null)     // last recorded scan (for the card)
     const [events, setEvents]     = useState([])       // today's time ins and time outs
+    const [showId, setShowId]     = useState(false)    // WBS 2.1.3 - toggle Enter ID form
+    const [code, setCode]         = useState('')       // WBS 2.1.3 - typed employee ID
 
     const modeRef       = useRef('auto')
     const lastResultRef = useRef(null)   // the last QR text that was read
@@ -138,6 +140,31 @@ export default function ScanAttendance() {
         setMode(key)
     }
 
+    // WBS 2.1.3 - undo the last recorded scan
+    async function handleUndo() {
+        if (!last) return
+        try {
+            await api('/api/attendance-scan/undo', {
+                method: 'POST',
+                body:   { user_id: last.employee.id, type: last.type }
+            })
+            setLast(null)
+            setMsg({ text: 'Last scan undone.', ok: true })
+            loadToday()
+        } catch (err) {
+            setMsg({ text: err.message, ok: false })
+        }
+    }
+
+    // WBS 2.1.3 - record a scan using a typed employee ID
+    function handleIdSubmit(e) {
+        e.preventDefault()
+        const value = code.trim()
+        if (!value) return setMsg({ text: 'Enter the employee ID.', ok: false })
+        recordScan(value)
+        setCode('')
+    }
+
     return (
         <OwnerLayout active="attendance">
             <h1>Scan attendance</h1>
@@ -165,6 +192,21 @@ export default function ScanAttendance() {
 
                     <div id="qr-reader"></div>
                     <p className="em-muted">Point the camera at the employee's QR code and hold it inside the frame. It records automatically.</p>
+
+                    {/* WBS 2.1.3 - Enter ID instead of scanning */}
+                    <button type="button" className="em-light" onClick={() => setShowId(v => !v)}>
+                        Enter ID instead
+                    </button>
+                    {showId && (
+                        <form onSubmit={handleIdSubmit}>
+                            <label htmlFor="employee_code">Employee ID</label>
+                            <div className="em-row">
+                                <input id="employee_code" name="employee_code" autoFocus
+                                       value={code} onChange={e => setCode(e.target.value)} />
+                                <button>Record</button>
+                            </div>
+                        </form>
+                    )}
                 </div>
 
                 <div style={{ flex: 1 }}>
@@ -195,6 +237,8 @@ export default function ScanAttendance() {
                                             : `${Number(last.hours).toFixed(1)} hours`}
                                     </strong>
                                 </p>
+                                {/* WBS 2.1.3 - undo button */}
+                                <button type="button" className="em-light" onClick={handleUndo}>Undo</button>
                             </div>
                         )}
                     </div>
