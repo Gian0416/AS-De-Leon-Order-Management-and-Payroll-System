@@ -1,3 +1,5 @@
+// WBS 2.2.1 - Daily Attendance View
+// WBS 2.2.2 - Attendance Summary and Status
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import OwnerLayout   from '../../components/OwnerLayout'
@@ -90,7 +92,7 @@ export default function Attendance() {
         return () => { cancelled = true }
     }, [])
 
-    // One row per employee for the chosen date.
+    // WBS 2.2.2 - Absent if no time in, Late if time in after 8:00 AM, On time otherwise
     const rows = useMemo(() => {
         const term = search.toLowerCase()
         return employees
@@ -110,6 +112,7 @@ export default function Attendance() {
             })
     }, [employees, records, date, search])
 
+    // WBS 2.2.2 - counts for the summary cards
     const present  = rows.filter(r => r.time_in).length
     const late     = rows.filter(r => r.status === 'Late').length
     const notIn    = rows.filter(r => r.status === 'Absent').length
