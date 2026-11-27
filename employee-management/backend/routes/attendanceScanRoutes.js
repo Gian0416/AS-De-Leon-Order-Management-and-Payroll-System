@@ -1,6 +1,7 @@
 // ==========================================
 // ATTENDANCE SCAN ROUTES
 // WBS 2.1.1 — QR Scan Time In and Time Out
+// WBS 2.1.2 — Attendance Scan Rules and Validation
 // ==========================================
 import express from 'express';
 import { scanAttendance } from '../controllers/attendanceScanController.js';
