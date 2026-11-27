@@ -1,3 +1,4 @@
+﻿// WBS 2.1.2 - Attendance Scan Rules and Validation
 import * as attendanceScanService from '../services/attendanceScanService.js';
 
 const sendError = (res, label, error, fallback) => {
