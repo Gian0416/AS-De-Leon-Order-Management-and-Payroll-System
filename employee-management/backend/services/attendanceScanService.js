@@ -1,3 +1,4 @@
+﻿// WBS 2.1.2 - Attendance Scan Rules and Validation
 import * as attendanceModel from '../models/Attendance.js';
 import * as userModel from '../models/User.js';
 import pool from '../db.js';
