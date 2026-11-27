@@ -29,3 +29,16 @@ export const createOrder = async (data) => {
     return { id: insertId, order_no: orderNo };
 };
 
+// ==========================================
+// FETCH ONE ORDER
+// ==========================================
+export const fetchOrderById = async (id) => {
+    const order = await orderModel.findById(id);
+    if (!order) throw fail(404, 'Order not found.');
+    const items    = await itemModel.fetchByOrderId(id);
+    const [payments] = await pool.query(
+        `SELECT * FROM order_payments WHERE order_id = ? ORDER BY recorded_at ASC`, [id]
+    );
+    const activeCount = await orderModel.countActive();
+    return { ...order, items, payments, active_count: activeCount, capacity_limit: CAPACITY_LIMIT };
+};

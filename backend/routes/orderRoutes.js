@@ -10,6 +10,8 @@ const router = express.Router();
 
 router.get('/customers',                 getCustomers);
 router.get('/',                          getAllOrders);
+router.get('/:id',                       getOrderById);
 router.post('/',                         createOrder);
+
 
 export default router;
