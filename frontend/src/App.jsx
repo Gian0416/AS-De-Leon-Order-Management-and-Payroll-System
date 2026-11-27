@@ -7,6 +7,7 @@ import VerifyOtp from './pages/VerifyOtp'
 import TransactionStatus  from './pages/owner/transaction-status/TransactionStatus'
 import ScanAttendance from './pages/owner/ScanAttendance'
 import Attendance     from './pages/owner/Attendance'
+import EmployeePayroll from './pages/owner/EmployeePayroll'
 
 export default function App() {
     return (
@@ -20,6 +21,7 @@ export default function App() {
                 <Route path="/owner/transaction-status"  element={<TransactionStatus />} />
                 <Route path="/owner/scan-attendance"     element={<ScanAttendance />} />
                 <Route path="/owner/attendance"          element={<Attendance />} />
+                <Route path="/owner/employee-payroll"    element={<EmployeePayroll />} />
             </Routes>
         </BrowserRouter>
     )
