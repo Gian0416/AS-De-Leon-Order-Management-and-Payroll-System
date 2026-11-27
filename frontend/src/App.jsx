@@ -5,6 +5,8 @@ import Login     from './pages/Login'
 import Signup    from './pages/Signup'
 import VerifyOtp from './pages/VerifyOtp'
 import TransactionStatus  from './pages/owner/transaction-status/TransactionStatus'
+import ScanAttendance from './pages/owner/ScanAttendance'
+import Attendance     from './pages/owner/Attendance'
 
 export default function App() {
     return (
@@ -16,6 +18,8 @@ export default function App() {
                 <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="*"           element={<Navigate to="/" replace />} />
                 <Route path="/owner/transaction-status"  element={<TransactionStatus />} />
+                <Route path="/owner/scan-attendance"     element={<ScanAttendance />} />
+                <Route path="/owner/attendance"          element={<Attendance />} />
             </Routes>
         </BrowserRouter>
     )
