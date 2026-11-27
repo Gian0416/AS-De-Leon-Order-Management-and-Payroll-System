@@ -1,3 +1,4 @@
+﻿// WBS 2.1.3 - Manual ID Entry and Undo Scan
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Html5QrcodeScanner } from 'html5-qrcode'
 import OwnerLayout  from '../../components/OwnerLayout'
@@ -40,9 +41,9 @@ function toDateKey(value) {
 
 // Turns a date/time from the backend into '7:58 AM'. Empty values show a dash.
 function formatClock(value) {
-    if (!value) return '—'
+    if (!value) return 'â€”'
     const d = new Date(value)
-    if (Number.isNaN(d.getTime())) return '—'
+    if (Number.isNaN(d.getTime())) return 'â€”'
     const h = d.getHours()
     const m = String(d.getMinutes()).padStart(2, '0')
     return `${((h + 11) % 12) + 1}:${m} ${h < 12 ? 'AM' : 'PM'}`
@@ -217,11 +218,11 @@ export default function ScanAttendance() {
                         ) : (
                             <div>
                                 <div className="em-who">
-                                    <div className="em-check">✓</div>
+                                    <div className="em-check">âœ“</div>
                                     <div>
                                         <div className="em-name">{last.employee.full_name}</div>
                                         <div className="em-muted">
-                                            {last.employee.position} · {last.employee.employee_code}
+                                            {last.employee.position} Â· {last.employee.employee_code}
                                         </div>
                                     </div>
                                 </div>
@@ -230,7 +231,7 @@ export default function ScanAttendance() {
                                         {last.type === 'in' ? 'Timed in' : 'Timed out'}
                                     </OwnerPill>{' '}
                                     <strong>
-                                        {formatClock(last.time)} ·{' '}
+                                        {formatClock(last.time)} Â·{' '}
                                         {last.type === 'in'
                                             ? (last.status === 'late' ? 'Late' : 'On time')
                                             : `${Number(last.hours).toFixed(1)} hours`}
