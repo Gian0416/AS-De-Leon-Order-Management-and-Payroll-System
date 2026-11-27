@@ -1,4 +1,5 @@
-﻿// WBS 2.3.1 - Wage Computation
+﻿// WBS 2.3.2 - Payroll Validation and Saving
+// WBS 2.3.1 - Wage Computation
 // WBS 2.3.1 - Wage Computation
 // WBS 2.3.2 - Payroll Validation and Saving
 // WBS 2.4.1 - Payroll Records View
