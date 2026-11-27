@@ -4,10 +4,12 @@ import cors from 'cors';
 import session from 'express-session';
 import pool from './db.js';
 
-import authRoutes       from './routes/authRoutes.js';
-import employeeRoutes   from './routes/employeeRoutes.js';
-import attendanceRoutes from './routes/attendanceRoutes.js';
-import payrollRoutes    from './routes/payrollRoutes.js';
+import authRoutes            from './routes/authRoutes.js';
+import employeeRoutes        from './routes/employeeRoutes.js';
+import attendanceRoutes      from './routes/attendanceRoutes.js';
+import payrollRoutes         from './routes/payrollRoutes.js';
+import attendanceScanRoutes  from './routes/attendanceScanRoutes.js';
+import payrollRecordRoutes   from './routes/payrollRecordRoutes.js';
 
 const app = express();
 
@@ -36,10 +38,12 @@ app.use(session({
 // ==========================================
 // ROUTES
 // ==========================================
-app.use('/api/auth',       authRoutes);
-app.use('/api/employee',   employeeRoutes);
-app.use('/api/attendance', attendanceRoutes);
-app.use('/api/payroll',    payrollRoutes);
+app.use('/api/auth',            authRoutes);
+app.use('/api/employee',        employeeRoutes);
+app.use('/api/attendance',      attendanceRoutes);
+app.use('/api/payroll',         payrollRoutes);
+app.use('/api/attendance-scan', attendanceScanRoutes);
+app.use('/api/payroll-records', payrollRecordRoutes);
 
 // ==========================================
 // DATABASE TEST
